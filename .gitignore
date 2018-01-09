@@ -11,3 +11,7 @@ yarn-error.log
 # webpack
 #
 public/build
+
+# next.js
+#
+.next/
