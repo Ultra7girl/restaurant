@@ -1,52 +1,117 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import 'isomorphic-fetch'
 
-import { format as formatDate } from 'date-fns'
+// import { format as formatDate } from 'date-fns'
 
 import fetchAPI from '../utils/fetchAPI'
 
 const typeDefs = `
-  type Query {
-    posts(first: Int = 20): [PostType]
-    post(id: Int!): PostType
-  }
-  type PostType {
-    id: Int
-    title: String
-    body: String
-    author: AuthorType
-    pubDate(format: String = "DD-MM-YYYY"): String
-    relatePosts(first: Int = 5): [PostType]
-  }
-  type AuthorType {
-    name: String
-    avatar: String
-  }
+    type Query {
+        postCats(first: Int = 20): [PostCatType]
+
+        postMenus(first: Int = 20): [PostMenuType]
+        postMenu(id: Int!): PostMenuType
+
+        postComments(first: Int = 20): [PostCommentType]
+    }
+    type PostCatType {
+        id: Int
+        name: String
+        images: String
+    }
+
+    type PostMenuType {
+        id: Int
+        categoryId: Int
+        name: String
+        images: String
+        price: Int
+        rating: RatingType
+        relateComments(first: Int = 5, id: Int = 1): [PostCommentType]
+    }
+    type RatingType{
+        one: Int
+        two: Int
+        three: Int
+        four: Int
+        five: Int
+    }
+
+    type PostCommentType{
+        id: Int
+        body: String
+        menuId: Int
+    }
 `
 
 const resolvers = {
-  Query: {
-    posts: async (_, { first }) => {
-      const { data } = await fetchAPI(`/posts?_limit=${first}`)
-      return data
+    Query: {
+        postCats: async (_, { first }) => {
+            const { data } = await fetchAPI(`/categories?_limit=${first}`)
+            return data
+        },
+        
+        postMenus: async (_, { first }) => {
+            const { data } = await fetchAPI(`/menus?_limit=${first}`)
+            return data
+        },
+        postMenu: async (_, { id }) => {
+            const { data } = await fetchAPI(`/menus?categoryId=${id}`)
+            return data
+        },
+
+        postComments: async (_, { id }) => {
+            const { data } = await fetchAPI(`/comments?menuId=${id}`)
+            return data
+        },
     },
-    post: async (_, { id }) => {
-      const { data } = await fetchAPI(`/posts/${id}`)
-      return data
+
+    PostMenuType:{
+        relateComments: async ({ id }, { first }) => {
+            const { data } = await fetchAPI(`/comments?_limit=${first}&menuId=${id}`)
+            return data
+        }
     }
-  },
-  PostType: {
-    pubDate: (_, { format }) => {
-      return formatDate(_.pubDate, format)
-    },
-    relatePosts: async (_, { first }) => {
-      const { data } = await fetchAPI(`/posts?_limit=${first}`)
-      return data
-    }
-  }
+
+    // PostCommentType: {
+    //     relateComments: async (_, { first }) => {
+    //         const { data } = await fetchAPI(`/comments?_limit=${first}`)
+    //         return data
+    //     }
+    // }
+  
 }
 
 export const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
+    typeDefs,
+    resolvers
 })
+
+
+// http://localhost:5000/graphiql
+
+    // {
+    //     # postCats {
+    //     #   id,
+    //     #   name,
+    //     #   images
+    //     # }
+        
+    //     # postMenus{
+    //     #   id,
+    //     #   categoryId,
+    //     #   name,
+    //     #   rating{
+    //     #     one, two, three, four, five
+    //     #   }
+    //     # }
+        
+    //     postComments{
+    //     id,
+    //     body,
+    //     menuId
+    //     }
+    // }
+
+//////////////////////////////////////////
+
