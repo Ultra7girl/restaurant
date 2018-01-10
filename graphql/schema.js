@@ -9,8 +9,8 @@ const typeDefs = `
     type Query {
         postCats(first: Int = 20): [PostCatType]
 
-        postMenus(first: Int = 20): [PostMenuType]
-        postMenu(id: Int!): PostMenuType
+        postMenus(first: Int = 20, id: Int!): [PostMenuType]
+        postMenu(first: Int = 5, id: Int!): [PostMenuType]
 
         postComments(first: Int = 20): [PostCommentType]
     }
@@ -51,12 +51,12 @@ const resolvers = {
             return data
         },
         
-        postMenus: async (_, { first }) => {
-            const { data } = await fetchAPI(`/menus?_limit=${first}`)
+        postMenus: async (_, { first, id}) => {
+            const { data } = await fetchAPI(`/menus?_limit=${first}&categoryId=${id}`)
             return data
         },
         postMenu: async (_, { id }) => {
-            const { data } = await fetchAPI(`/menus?categoryId=${id}`)
+            const { data } = await fetchAPI(`/menus?id=${id}`)
             return data
         },
 
@@ -90,28 +90,39 @@ export const schema = makeExecutableSchema({
 
 // http://localhost:5000/graphiql
 
-    // {
-    //     # postCats {
-    //     #   id,
-    //     #   name,
-    //     #   images
-    //     # }
-        
-    //     # postMenus{
-    //     #   id,
-    //     #   categoryId,
-    //     #   name,
-    //     #   rating{
-    //     #     one, two, three, four, five
-    //     #   }
-    //     # }
-        
-    //     postComments{
-    //     id,
-    //     body,
-    //     menuId
-    //     }
-    // }
+// {
+//     postCats {
+//       id,
+//       name,
+//       images
+//     }
+    
+//     postMenu(id:1){
+//       id,
+//       categoryId,
+//       name,
+//       rating{
+//         one, two, three, four, five
+//       },
+//       relateComments{
+//         id,
+//         body,
+//         menuId
+//       }
+//     }
+
+//           postMenus(first:2, id:1){
+//       id,
+//       categoryId,
+//       name,
+//       rating{
+//       one, two, three, four, five
+//       }
+          
+//           }
+    
+// }
 
 //////////////////////////////////////////
+
 
