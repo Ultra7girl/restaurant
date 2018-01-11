@@ -4,7 +4,7 @@
   "description": "A development environment for starting up a react project.",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
     "start": "next start",
     "api": "json-server ./api/db.json --port 4000 --delay 500",

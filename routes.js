@@ -8,4 +8,4 @@ const routes = (module.exports = nextRoutes())
 // routes.add('article', '/article/:id(\\d+)')
 
 routes.add('home', '/', 'index')
-routes.add('menu', '/menu/:id(\\d+)')
+routes.add('category', '/category/:id(\\d+)')
