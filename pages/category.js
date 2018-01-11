@@ -24,17 +24,17 @@ function CategoryPage({ data }) {
 					text-decoration: none;
 				}
 				.main-left {
-          width: 70%;
-          float: left;
-        }
-        .main-right {
-          width: 30%;
-          float: left;
-        }
+					width: 70%;
+					float: left;
+				}
+				.main-right {
+					width: 30%;
+					float: left;
+				}
 				.box {
 					width: 30%;
 					float: left;
-					cursor:pointer;
+					cursor: pointer;
 				}
 				.clearFix {
 					clear: both;
@@ -45,14 +45,18 @@ function CategoryPage({ data }) {
 			</Head>
 			<div className="container">
 				<div className="main-left">
-					{postMenus.map(function (menus) {
+					{postMenus.map(function(menus) {
 						return (
 							<div key={menus.id} className="box">
-								<div>
-									<img width="150" height="150" src={`../static/images/menus/${menus.images}`} />
-								</div>
 								<Link route="item" params={{ id: menus.id }}>
-									<a>{menus.name}</a>
+									<div>
+										<img
+											width="150"
+											height="150"
+											src={`../static/images/menus/${menus.images}`}
+										/>
+										<a>{menus.name}</a>
+									</div>
 								</Link>
 							</div>
 						)
