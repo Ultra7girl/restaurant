@@ -10,6 +10,7 @@ import { Link } from '../routes'
 
 function CategoryPage({ data }) {
 	const { loading, postMenus } = data
+	// console.log(postMenus)
 
 	if (loading === true) return 'Loading...'
 	return (

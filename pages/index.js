@@ -10,7 +10,7 @@ import { Link } from '../routes'
 
 function HomePage({ data }) {
   // console.log('data', data)
-  const { loading, postMenus } = data
+  const { loading, postMenuIndex } = data
 
   if (loading === true) return 'Loading...'
   return (
@@ -18,20 +18,40 @@ function HomePage({ data }) {
       <Head>
         <title>Restaurant </title>
       </Head>
+      <style jsx>{`
+        header {
+          text-align: center;
+        }
+        a {
+          color: #666;
+          text-decoration: none;
+        }
+        .box {
+          width: 30%;
+          float: left;
+
+        }
+        .clearFix {
+          clear: both;
+        }
+      `}</style>
       <div>
         <div>
-          {postMenus.map(function(menus) {
+          {postMenuIndex.map(function (menus) {
             return (
-              <div key={menus.id}>
+              <div key={menus.id} className="box">
                 <div>
-                  <img />
+                  <img width="200" height="200" src={`/static/images/menus/${menus.images}`} />
                 </div>
-                <Link route="entry" params={{ id: menus.id }}>
+
+                <Link route="menu" params={{ id: menus.id }}>
                   <a>{menus.name}</a>
                 </Link>
+                <br />ราคา {menus.price} บาท
               </div>
             )
           })}
+          <div className="clearFix"></div>
         </div>
 
         <div />
@@ -42,10 +62,12 @@ function HomePage({ data }) {
 
 const QUERY_POSTS = gql`
   query {
-    postMenus(first: 20, id: 1) {
+    postMenuIndex(first: 20) {
       id
       categoryId
+      images
       name
+      price
       rating {
         one
         two
