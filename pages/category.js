@@ -48,12 +48,14 @@ function CategoryPage({ data }) {
 					{postMenus.map(function (menus) {
 						return (
 							<div key={menus.id} className="box">
-								<div>
-									<img width="150" height="150" src={`../static/images/menus/${menus.images}`} />
-								</div>
 								<Link route="item" params={{ id: menus.id }}>
-									<a>{menus.name}</a>
+									<div>
+										<br /><img width="180" height="150" src={`../static/images/menus/${menus.images}`} /><br />
+										<a>{menus.name}</a>
+										<br />{menus.price}.- <br /><br />
+									</div>
 								</Link>
+								<input type="button" value="Order" />
 							</div>
 						)
 					})}
@@ -70,6 +72,7 @@ const QUERY_POSTS = gql`
 			id
 			categoryId
 			name
+			price
 			images
 			rating {
 				one

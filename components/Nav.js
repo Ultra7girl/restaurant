@@ -21,26 +21,33 @@ function Nav({ data }) {
           font-size: 100%;
         }
         .box-nav {
-          width: 10%;
+          width: 100%;
           height: 100;
+        }
+        .box-nav-list {
+          width: 16%;
+          height: 100%;
           float: left;
           border-top: 1px solid grey;
           border-bottom: 1px solid grey;
+          cursor: pointer;
         }
         .clearFix {
           clear: both;
         }
       `}</style>
-      {postCats.map(function (cats) {
+      <div className="box-nav">
+        {postCats.map(function (cats) {
 
-        return (
-          <div key={cats.id} className="box-nav">
-            <Link route="category" params={{ id: cats.id }}>
-              <a>{cats.name}</a>
-            </Link>
-          </div>
-        )
-      })}
+          return (
+            <div key={cats.id} className="box-nav-list">
+              <Link route="category" params={{ id: cats.id }}>
+                <h3><a>{cats.name}</a></h3>
+              </Link>
+            </div>
+          )
+        })}
+      </div>
     </nav>
   )
 }
