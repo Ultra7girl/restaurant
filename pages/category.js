@@ -50,14 +50,20 @@ function CategoryPage({ data }) {
 							<div key={menus.id} className="box">
 								<Link route="item" params={{ id: menus.id }}>
 									<div>
+										<br />
 										<img
-											width="150"
+											width="180"
 											height="150"
 											src={`../static/images/menus/${menus.images}`}
 										/>
+										<br />
 										<a>{menus.name}</a>
+										<br />
+										{menus.price}.- <br />
+										<br />
 									</div>
 								</Link>
+								<input type="button" value="Order" />
 							</div>
 						)
 					})}
@@ -74,6 +80,7 @@ const QUERY_POSTS = gql`
 			id
 			categoryId
 			name
+			price
 			images
 			rating {
 				one
