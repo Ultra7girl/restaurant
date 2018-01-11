@@ -15,16 +15,41 @@ function CategoryPage({ data }) {
 	if (loading === true) return 'Loading...'
 	return (
 		<div>
+			<style jsx>{`
+				header {
+					text-align: center;
+				}
+				a {
+					color: #666;
+					text-decoration: none;
+				}
+				.main-left {
+          width: 70%;
+          float: left;
+        }
+        .main-right {
+          width: 30%;
+          float: left;
+        }
+				.box {
+					width: 30%;
+					float: left;
+					cursor:pointer;
+				}
+				.clearFix {
+					clear: both;
+				}
+			`}</style>
 			<Head>
 				<title>Restaurant </title>
 			</Head>
-			<div>
-				<div>
-					{postMenus.map(function(menus) {
+			<div className="container">
+				<div className="main-left">
+					{postMenus.map(function (menus) {
 						return (
-							<div key={menus.id}>
+							<div key={menus.id} className="box">
 								<div>
-									<img src={`../static/images/menus/${menus.images}`} />
+									<img width="150" height="150" src={`../static/images/menus/${menus.images}`} />
 								</div>
 								<Link route="item" params={{ id: menus.id }}>
 									<a>{menus.name}</a>
@@ -33,8 +58,7 @@ function CategoryPage({ data }) {
 						)
 					})}
 				</div>
-
-				<div />
+				<div className="main-right">order list</div>
 			</div>
 		</div>
 	)

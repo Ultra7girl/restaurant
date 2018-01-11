@@ -6,7 +6,7 @@ export default function Header() {
     <header>
       <Link route="home">
         <a>
-          <img src="/static/images/logo.png" alt="React" />
+          <img src="../../static/images/logo.jpg" width="200" alt="React" />
         </a>
       </Link>
       <style jsx>{`

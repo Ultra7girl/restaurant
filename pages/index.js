@@ -29,32 +29,42 @@ function HomePage({ data }) {
         .box {
           width: 30%;
           float: left;
-
+          cursor:pointer;
+        }
+        .main-left {
+          width: 70%;
+          float: left;
+        }
+        .main-right {
+          width: 30%;
+          float: left;
+        }
+        .container {
+          border-right: 1px solid grey;
         }
         .clearFix {
           clear: both;
         }
       `}</style>
-      <div>
-        <div>
+      <div className="container">
+        <div className="main-left">
           {postMenuIndex.map(function (menus) {
             return (
               <div key={menus.id} className="box">
-                <div>
-                  <img width="200" height="200" src={`/static/images/menus/${menus.images}`} />
-                </div>
-
-                <Link route="menu" params={{ id: menus.id }}>
-                  <a>{menus.name}</a>
+                <Link route="item" params={{ id: menus.id }}>
+                  <div>
+                    <img width="150" height="150" src={`/static/images/menus/${menus.images}`} /><br />
+                    <a>{menus.name}</a>
+                    <br />{menus.price}.- <br /><br />
+                  </div>
                 </Link>
-                <br />ราคา {menus.price} บาท
+
               </div>
             )
           })}
           <div className="clearFix"></div>
         </div>
-
-        <div />
+        <div className="main-right">order list</div>
       </div>
     </div>
   )

@@ -18,11 +18,14 @@ function Nav({ data }) {
       a {
           color: #666;
           text-decoration: none;
+          font-size: 100%;
         }
         .box-nav {
           width: 10%;
+          height: 100;
           float: left;
-
+          border-top: 1px solid grey;
+          border-bottom: 1px solid grey;
         }
         .clearFix {
           clear: both;
