@@ -12,6 +12,8 @@ const typeDefs = `
         postMenus(first: Int = 20, id: Int!): [PostMenuType]
         postMenu(first: Int = 5, id: Int!): [PostMenuType]
 
+        postMenuIndex(first: Int = 20):[PostMenuType]
+
         postComments(first: Int = 20): [PostCommentType]
     }
     type PostCatType {
@@ -50,13 +52,17 @@ const resolvers = {
             const { data } = await fetchAPI(`/categories?_limit=${first}`)
             return data
         },
-        
-        postMenus: async (_, { first, id}) => {
+
+        postMenus: async (_, { first, id }) => {
             const { data } = await fetchAPI(`/menus?_limit=${first}&categoryId=${id}`)
             return data
         },
         postMenu: async (_, { id }) => {
             const { data } = await fetchAPI(`/menus?id=${id}`)
+            return data
+        },
+        postMenuIndex: async () => {
+            const { data } = await fetchAPI(`/menus`)
             return data
         },
 
@@ -66,7 +72,7 @@ const resolvers = {
         },
     },
 
-    PostMenuType:{
+    PostMenuType: {
         relateComments: async ({ id }, { first }) => {
             const { data } = await fetchAPI(`/comments?_limit=${first}&menuId=${id}`)
             return data
@@ -79,7 +85,7 @@ const resolvers = {
     //         return data
     //     }
     // }
-  
+
 }
 
 export const schema = makeExecutableSchema({
@@ -96,7 +102,7 @@ export const schema = makeExecutableSchema({
 //       name,
 //       images
 //     }
-    
+
 //     postMenu(id:1){
 //       id,
 //       categoryId,
@@ -118,9 +124,9 @@ export const schema = makeExecutableSchema({
 //       rating{
 //       one, two, three, four, five
 //       }
-          
+
 //           }
-    
+
 // }
 
 //////////////////////////////////////////
