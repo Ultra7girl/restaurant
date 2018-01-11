@@ -9,3 +9,4 @@ const routes = (module.exports = nextRoutes())
 
 routes.add('home', '/', 'index')
 routes.add('category', '/category/:id(\\d+)')
+routes.add('item', '/item/:id(\\d+)')
