@@ -57,11 +57,17 @@ function itemPage({ data }) {
 										/>
 									</div>
 									<p>{item.name}</p>
-									<p>ราคา {item.price}-</p>
+									<p>ราคา {item.price}.-</p>
+									<p>
+										{item.rating.avgRating}({item.rating.totalRating} Ratings)
+									</p>
+									<input type="button" value="Order" />
 								</div>
 							</div>
 							<div className="main-right">
-								<p>Comment</p>
+								<p>
+									<strong>Reviews</strong>
+								</p>
 								{item.relateComments.map(function(comments) {
 									{
 										return <p key={comments.id}>{comments.body}</p>
@@ -85,11 +91,15 @@ const QUERY_POSTS = gql`
 			images
 			price
 			rating {
-				one
-				two
-				three
-				four
-				five
+				rawRating {
+					one
+					two
+					three
+					four
+					five
+				}
+				totalRating
+				avgRating
 			}
 			relateComments {
 				id

@@ -82,13 +82,6 @@ const QUERY_POSTS = gql`
 			name
 			price
 			images
-			rating {
-				one
-				two
-				three
-				four
-				five
-			}
 		}
 	}
 `
