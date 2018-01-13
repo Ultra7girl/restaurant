@@ -9,16 +9,16 @@ import page from '../hocs/page'
 import { Link } from '../routes'
 
 function HomePage({ data }) {
-	// console.log('data', data)
-	const { loading, postMenuIndex } = data
+  // console.log('data', data)
+  const { loading, postMenuIndex } = data
 
-	if (loading === true) return 'Loading...'
-	return (
-		<div>
-			<Head>
-				<title>Restaurant </title>
-			</Head>
-			<style jsx>{`
+  if (loading === true) return 'Loading...'
+  return (
+    <div>
+      <Head>
+        <title>Restaurant </title>
+      </Head>
+      <style jsx>{`
 				header {
 					text-align: center;
 				}
@@ -46,36 +46,36 @@ function HomePage({ data }) {
 					clear: both;
 				}
 			`}</style>
-			<div className="container">
-				<div className="main-left">
-					{postMenuIndex.map(function(menus) {
-						return (
-							<div key={menus.id} className="box">
-								<Link route="item" params={{ id: menus.id }}>
-									<div>
-										<br />
-										<img
-											width="180"
-											height="150"
-											src={`/static/images/menus/${menus.images}`}
-										/>
-										<br />
-										<a>{menus.name}</a>
-										<br />
-										{menus.price}.- <br />
-										<br />
-									</div>
-								</Link>
-								<input type="button" value="Order" />
-							</div>
-						)
-					})}
-					<div className="clearFix" />
-				</div>
-				<div className="main-right">order list</div>
-			</div>
-		</div>
-	)
+      <div className="container">
+        <div className="main-left">
+          {postMenuIndex.map(function (menus) {
+            return (
+              <div key={menus.id} className="box">
+                <Link route="item" params={{ id: menus.id }}>
+                  <div>
+                    <br />
+                    <img
+                      width="180"
+                      height="150"
+                      src={`/static/images/menus/${menus.images}`}
+                    />
+                    <br />
+                    <a>{menus.name}</a>
+                    <br />
+                    {menus.price}.- <br />
+                    <br />
+                  </div>
+                </Link>
+                <button>Order</button>
+              </div>
+            )
+          })}
+          <div className="clearFix" />
+        </div>
+        <div className="main-right">order list</div>
+      </div>
+    </div>
+  )
 }
 
 const QUERY_POSTS = gql`

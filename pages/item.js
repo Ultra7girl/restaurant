@@ -6,9 +6,6 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import page from '../hocs/page'
-import { Link } from '../routes'
-
-
 
 function itemPage({ data }) {
 	const { loading, postMenu } = data
@@ -114,10 +111,8 @@ function itemPage({ data }) {
 											src={`../static/images/menus/${item.images}`}
 										/>
 									</div>
-									<p>{item.name}</p>
-									<p>ราคา {item.price}.-</p>
 									<p>
-										{item.rating.avgRating}({item.rating.totalRating} Ratings)
+
 										<div className="rating">
 											<input type="radio" id="star5" checked={(item.rating.avgRating <= 5)} name="rating" value="5" /><label htmlFor="star5" title="Rocks!">5 stars</label>
 											<input type="radio" id="star4" checked={(item.rating.avgRating <= 4)} name="rating" value="4" /><label htmlFor="star4" title="Pretty good">4 stars</label>
@@ -125,8 +120,10 @@ function itemPage({ data }) {
 											<input type="radio" id="star2" checked={(item.rating.avgRating <= 2)} name="rating" value="2" /><label htmlFor="star2" title="Kinda bad">2 stars</label>
 											<input type="radio" id="star1" checked={(item.rating.avgRating <= 1)} name="rating" value="1" /><label htmlFor="star1" title="Sucks big time">1 star</label>
 										</div>
-
+										({item.rating.totalRating} Ratings)
 									</p>
+									<p><h2>{item.name}</h2></p>
+									<p>ราคา {item.price}.-</p>
 									<input type="button" value="Order" />
 								</div>
 							</div>
