@@ -10,7 +10,7 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 
 function Nav({ data }) {
-  const { loading, postCats } = data
+  const { postCats } = data
   return (
 
     <nav>

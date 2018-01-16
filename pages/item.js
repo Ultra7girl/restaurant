@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import page from '../hocs/page'
+import { Link } from '../routes'
 
 function itemPage({ data }) {
 	const { loading, postMenu } = data
@@ -13,6 +14,9 @@ function itemPage({ data }) {
 	if (loading === true) return 'Loading...'
 	return (
 		<div>
+			<Head>
+				<title>Restaurant </title>
+			</Head>
 			<style jsx>{`
 				header {
 					text-align: center;
@@ -95,9 +99,7 @@ function itemPage({ data }) {
 						left:2px;
 				}
 			`}</style>
-			<Head>
-				<title>Restaurant </title>
-			</Head>
+
 			<div className="container">
 				{postMenu.map(function (item) {
 					return (
