@@ -9,7 +9,7 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function ItemPage({ data, addOrder }) {
+function ItemPage({ data, orderlist, addOrder }) {
   const { loading, postMenu } = data
 
   if (loading === true) return 'Loading...'
@@ -192,6 +192,16 @@ function ItemPage({ data, addOrder }) {
                 <div>
                   <p>
                     <strong>Order list</strong>
+                    {orderlist.map(function(list) {
+                      {
+                        return (
+                          <div key={list.id}>
+                            <span>{list.name}</span>
+                            <span>{list.amount}</span>
+                          </div>
+                        )
+                      }
+                    })}
                   </p>
                 </div>
               </div>
@@ -208,23 +218,21 @@ class OrderContrainer extends React.Component {
     super(props)
 
     this.state = {
-      baskets: []
+      orderlist: []
     }
     this.addOrder = this.addOrder.bind(this)
   }
 
   addOrder(item) {
-    console.log('menus=>', item.id)
+    // console.log('menus=>', item.id)
 
-    const completedItem = this.state.baskets.filter(function(basket) {
-      console.log('filter', basket.id)
+    const completedItem = this.state.orderlist.filter(function(basket) {
       return basket.id === item.id
     }).length
-    console.log('completedItem=>', completedItem)
 
     if (completedItem === 0) {
       this.setState({
-        baskets: this.state.baskets.concat({
+        orderlist: this.state.orderlist.concat({
           id: item.id,
           name: item.name,
           price: item.price,
@@ -233,21 +241,30 @@ class OrderContrainer extends React.Component {
       })
     } else {
       this.setState({
-        baskets: this.state.baskets.map(function(basket) {
-          console.log('increase amount=>', basket)
+        orderlist: this.state.orderlist.map(function(basket) {
           if (basket.id === item.id) {
-            console.log(basket)
-            // basket.amount = basket.amount + 1
+            return {
+              ...basket,
+              amount: basket.amount + 1
+            }
           }
+
+          return basket
         })
       })
     }
 
-    console.log('basket=>', this.state.baskets)
+    console.log('basket=>', this.state.orderlist)
   }
 
   render() {
-    return <ItemPage data={this.props.data} addOrder={this.addOrder} />
+    return (
+      <ItemPage
+        data={this.props.data}
+        orderlist={this.state.orderlist}
+        addOrder={this.addOrder}
+      />
+    )
   }
 }
 const QUERY_POSTS = gql`
