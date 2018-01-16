@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Head from 'next/head'
 import { compose } from 'recompose'
 
@@ -8,7 +9,40 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function HomePage({ data }) {
+function OrderList({ orderlist, removeOrder }) {
+  return (
+    <ul>
+      {orderlist
+        .map(function (order) {
+          return (
+            <OrderItem
+              key={order.id}
+              order={order}
+              removeOrder={removeOrder}
+            />
+          )
+        })}
+    </ul>
+  )
+}
+
+function OrderItem({ order, removeOrder }) {
+  return (
+    <li>
+      <span>{order.title}</span>
+      <input
+        type="text"
+        value={order.amount}
+        onChange={amountOrderchange(this, order.amount)}
+      />
+      <button onClick={removeOrder(order.id)}>
+        X
+      </button>
+    </li>
+  )
+}
+
+function HomePage({ data, orderlist, handleOrder, removeOrder }) {
   // console.log('data', data)
   const { loading, postMenuIndex } = data
 
@@ -66,16 +100,79 @@ function HomePage({ data }) {
                     <br />
                   </div>
                 </Link>
-                <button>Order</button>
+                <button value={menus.id} onClick={handleOrder.bind(null, menus)}>Order</button>
               </div>
             )
           })}
           <div className="clearFix" />
         </div>
-        <div className="main-right">order list</div>
+        <div className="main-right">
+          <OrderList
+            orderlist={orderlist}
+            removeOrder={removeOrder}
+          />
+        </div>
       </div>
     </div>
   )
+}
+
+class OrderContrainer extends React.Component {
+
+  state = {
+    orderlist: []
+  }
+
+  amountOrderchange = id => () => {
+    this.setState({
+      orderlist: this.state.orderlist.filter(function (order) {
+        if (order.id !== id) {
+          1
+        }
+      })
+    })
+  }
+
+  removeOrder = id => () => {
+    this.setState({
+      orderlist: this.state.orderlist.filter(function (order) {
+        return order.id !== id
+      })
+    })
+  }
+
+  handleOrder = menu => {
+    let x = true
+    this.state.orderlist.map(function (order) {
+      if (order.id === menu.id) {
+        return x = false
+      }
+    })
+    if (x === true) {
+      this.setState({
+
+        orderlist: this.state.orderlist.concat([
+          {
+            id: menu.id,
+            title: menu.name,
+            price: menu.price,
+            amount: 1
+          }
+        ])
+      })
+    }
+  }
+
+  render() {
+    return (
+      <HomePage
+        data={this.props.data}
+        orderlist={this.state.orderlist}
+        handleOrder={this.handleOrder}
+        removeOrder={this.removeOrder}
+      />
+    )
+  }
 }
 
 const QUERY_POSTS = gql`
@@ -86,8 +183,9 @@ const QUERY_POSTS = gql`
 			images
 			name
 			price
-		}
+    }
+    
 	}
 `
 
-export default compose(page, graphql(QUERY_POSTS))(HomePage)
+export default compose(page, graphql(QUERY_POSTS))(OrderContrainer)

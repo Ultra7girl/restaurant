@@ -7,6 +7,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import page from '../hocs/page'
+import { Link } from '../routes'
 
 function ItemPage({ data, addOrder }) {
   const { loading, postMenu } = data
