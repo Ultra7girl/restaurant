@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { connect } from 'react-redux'
+
 import Head from 'next/head'
 import { compose } from 'recompose'
 
@@ -9,7 +11,7 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function ItemPage({ data, orderlist, addOrder }) {
+function ItemPage({ data, orderList, addOrder }) {
   const { loading, postMenu } = data
 
   if (loading === true) return 'Loading...'
@@ -190,19 +192,23 @@ function ItemPage({ data, orderlist, addOrder }) {
                   })}
                 </div>
                 <div>
-                  <p>
-                    <strong>Order list</strong>
-                    {orderlist.map(function(list) {
-                      {
-                        return (
-                          <div key={list.id}>
-                            <span>{list.name}</span>
-                            <span>{list.amount}</span>
-                          </div>
-                        )
-                      }
-                    })}
-                  </p>
+                  <strong>My Order</strong>
+                  {orderList.map(function(list) {
+                    {
+                      return (
+                        <div key={list.id}>
+                          <span>{list.name}</span>
+                          <span>{list.amount}</span>
+                        </div>
+                      )
+                    }
+                  })}
+                  <Link route="order">
+                    <button>Order Now</button>
+                  </Link>
+                  <Link route="checkbill">
+                    <button>Check Bill</button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -214,59 +220,28 @@ function ItemPage({ data, orderlist, addOrder }) {
 }
 
 class OrderContrainer extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      orderlist: []
-    }
-    this.addOrder = this.addOrder.bind(this)
-  }
-
-  addOrder(item) {
-    // console.log('menus=>', item.id)
-
-    const completedItem = this.state.orderlist.filter(function(basket) {
-      return basket.id === item.id
-    }).length
-
-    if (completedItem === 0) {
-      this.setState({
-        orderlist: this.state.orderlist.concat({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          amount: 1
-        })
-      })
-    } else {
-      this.setState({
-        orderlist: this.state.orderlist.map(function(basket) {
-          if (basket.id === item.id) {
-            return {
-              ...basket,
-              amount: basket.amount + 1
-            }
-          }
-
-          return basket
-        })
-      })
-    }
-
-    console.log('basket=>', this.state.orderlist)
+  addOrder = item => {
+    this.props.dispatch({
+      type: 'ADD_ORDER',
+      item
+    })
   }
 
   render() {
     return (
       <ItemPage
         data={this.props.data}
-        orderlist={this.state.orderlist}
+        orderList={this.props.orderList}
         addOrder={this.addOrder}
       />
     )
   }
 }
+
+function stateSelecter(state) {
+  return { orderList: state.orderList }
+}
+
 const QUERY_POSTS = gql`
   query getMenus($first: Int, $itemId: Int!) {
     postMenu(first: $first, id: $itemId) {
@@ -297,6 +272,7 @@ const QUERY_POSTS = gql`
 
 export default compose(
   page,
+  connect(stateSelecter),
   graphql(QUERY_POSTS, {
     options: ({ url: { query: { id } } }) => ({
       variables: {
