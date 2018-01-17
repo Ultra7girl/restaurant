@@ -17,11 +17,10 @@ function CheckBillPage({ data, orderList, checkBill }) {
 
   // if (loading === true) return 'Loading...'
 
-  // const total = orderList.length
-  // const totalPrice = orderList.reduce((prev, ) => {
-
-  //   return
-  // }, 0)
+  const total = orderList.length
+  const totalPrice = orderList.reduce((prev, item) => {
+    return prev + item.price * item.amount
+  }, 0)
 
   return (
     <div>
@@ -54,6 +53,8 @@ function CheckBillPage({ data, orderList, checkBill }) {
         <title>Restaurant </title>
       </Head>
       <div className="container">
+        <p>Number of Orders: {total}</p>
+        <p>Total Price: {totalPrice}</p>
         <div>
           <button onClick={checkBill}>Close</button>
         </div>
