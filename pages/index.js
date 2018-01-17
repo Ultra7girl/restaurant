@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { connect } from 'react-redux'
+
 import Head from 'next/head'
 import { compose } from 'recompose'
 
@@ -9,42 +11,10 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function OrderList({ orderlist, removeOrder }) {
-  return (
-    <ul>
-      {orderlist
-        .map(function (order) {
-          return (
-            <OrderItem
-              key={order.id}
-              order={order}
-              removeOrder={removeOrder}
-            />
-          )
-        })}
-    </ul>
-  )
-}
-
-function OrderItem({ order, removeOrder }) {
-  return (
-    <li>
-      <span>{order.title}</span>
-      <input
-        type="text"
-        value={order.amount}
-        onChange={amountOrderchange(this, order.amount)}
-      />
-      <button onClick={removeOrder(order.id)}>
-        X
-      </button>
-    </li>
-  )
-}
-
-function HomePage({ data, orderlist, handleOrder, removeOrder }) {
-  // console.log('data', data)
+function HomePage({ data, orderList, addOrder }) {
   const { loading, postMenuIndex } = data
+  // console.log('postMenus =>', data)
+  // console.log('postMenusIndex =>', postMenuIndex)
 
   if (loading === true) return 'Loading...'
   return (
@@ -53,36 +23,36 @@ function HomePage({ data, orderlist, handleOrder, removeOrder }) {
         <title>Restaurant </title>
       </Head>
       <style jsx>{`
-				header {
-					text-align: center;
-				}
-				a {
-					color: #666;
-					text-decoration: none;
-				}
-				.box {
-					width: 30%;
-					float: left;
-					cursor: pointer;
-				}
-				.main-left {
-					width: 70%;
-					float: left;
-				}
-				.main-right {
-					width: 30%;
-					float: left;
-				}
-				.container {
-					border-right: 1px solid grey;
-				}
-				.clearFix {
-					clear: both;
-				}
-			`}</style>
+        header {
+          text-align: center;
+        }
+        a {
+          color: #666;
+          text-decoration: none;
+        }
+        .box {
+          width: 30%;
+          float: left;
+          cursor: pointer;
+        }
+        .main-left {
+          width: 70%;
+          float: left;
+        }
+        .main-right {
+          width: 30%;
+          float: left;
+        }
+        .container {
+          border-right: 1px solid grey;
+        }
+        .clearFix {
+          clear: both;
+        }
+      `}</style>
       <div className="container">
         <div className="main-left">
-          {postMenuIndex.map(function (menus) {
+          {postMenuIndex.map(function(menus) {
             return (
               <div key={menus.id} className="box">
                 <Link route="item" params={{ id: menus.id }}>
@@ -100,17 +70,30 @@ function HomePage({ data, orderlist, handleOrder, removeOrder }) {
                     <br />
                   </div>
                 </Link>
-                <button value={menus.id} onClick={handleOrder.bind(null, menus)}>Order</button>
+                <button onClick={addOrder.bind(null, menus)}>Order</button>
               </div>
             )
           })}
           <div className="clearFix" />
         </div>
         <div className="main-right">
-          <OrderList
-            orderlist={orderlist}
-            removeOrder={removeOrder}
-          />
+          <strong>My Orders</strong>
+          {orderList.map(function(list) {
+            {
+              return (
+                <div key={list.id}>
+                  <span>{list.name}</span>
+                  <span>{list.amount}</span>
+                </div>
+              )
+            }
+          })}
+          <Link route="order">
+            <button>Order Now</button>
+          </Link>
+          <Link route="checkbill">
+            <button>Check Bill</button>
+          </Link>
         </div>
       </div>
     </div>
@@ -118,74 +101,40 @@ function HomePage({ data, orderlist, handleOrder, removeOrder }) {
 }
 
 class OrderContrainer extends React.Component {
-
-  state = {
-    orderlist: []
-  }
-
-  amountOrderchange = id => () => {
-    this.setState({
-      orderlist: this.state.orderlist.filter(function (order) {
-        if (order.id !== id) {
-          1
-        }
-      })
+  addOrder = item => {
+    this.props.dispatch({
+      type: 'ADD_ORDER',
+      item
     })
-  }
-
-  removeOrder = id => () => {
-    this.setState({
-      orderlist: this.state.orderlist.filter(function (order) {
-        return order.id !== id
-      })
-    })
-  }
-
-  handleOrder = menu => {
-    let x = true
-    this.state.orderlist.map(function (order) {
-      if (order.id === menu.id) {
-        return x = false
-      }
-    })
-    if (x === true) {
-      this.setState({
-
-        orderlist: this.state.orderlist.concat([
-          {
-            id: menu.id,
-            title: menu.name,
-            price: menu.price,
-            amount: 1
-          }
-        ])
-      })
-    }
   }
 
   render() {
     return (
       <HomePage
         data={this.props.data}
-        orderlist={this.state.orderlist}
-        handleOrder={this.handleOrder}
-        removeOrder={this.removeOrder}
+        orderList={this.props.orderList}
+        addOrder={this.addOrder}
       />
     )
   }
 }
 
+function stateSelecter(state) {
+  return { orderList: state.orderList }
+}
+
 const QUERY_POSTS = gql`
-	query {
-		postMenuIndex(first: 20) {
-			id
-			categoryId
-			images
-			name
-			price
+  query {
+    postMenuIndex(first: 20) {
+      id
+      categoryId
+      images
+      name
+      price
     }
-    
-	}
+  }
 `
 
-export default compose(page, graphql(QUERY_POSTS))(OrderContrainer)
+export default compose(page, connect(stateSelecter), graphql(QUERY_POSTS))(
+  OrderContrainer
+)
