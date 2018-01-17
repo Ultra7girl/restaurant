@@ -23,38 +23,75 @@ function HomePage({ data, orderList, addOrder }) {
         <title>Restaurant </title>
       </Head>
       <style jsx>{`
-        header {
-          text-align: center;
-        }
-        a {
-          color: #666;
-          text-decoration: none;
-        }
-        .box {
-          width: 30%;
-          float: left;
-          cursor: pointer;
-        }
-        .main-left {
-          width: 70%;
-          float: left;
-        }
-        .main-right {
-          width: 30%;
-          float: left;
-        }
-        .container {
-          border-right: 1px solid grey;
-        }
-        .clearFix {
-          clear: both;
-        }
+      header {
+        text-align: center;
+      }
+      a {
+        color: #666;
+        text-decoration: none;
+      }
+      .main-left {
+        width: 68%;
+        height: 1600px;
+        float: left;
+        border-right: 1px solid grey;
+      }
+      .main-right {
+        width: 28%;
+        height: 1600px;
+        float: left;
+        border-right: 1px solid grey;
+      }
+
+      .order-list{
+        width: 90%;
+        float: left;
+      }
+      .order-list span p {
+        font-size: 15px;
+      }
+
+      .order-list-num{
+        width: 7%;
+        float: right;
+      }
+      .order-list-num span p {
+        font-size: 15px;
+      }
+
+      .box {
+        width: 30%;
+        float: left;
+        cursor: pointer;
+      }
+      .clearFix {
+        clear: both;
+      }
+
+      .btn {
+        
+        -webkit-border-radius: 3;
+        -moz-border-radius: 3;
+        border-radius: 3px;
+        font-family: Arial;
+        color: #11111;
+        font-size: 15px;
+        padding: 5px 10px 5px 11px;
+        text-decoration: none;
+      }
+      
+      .btn:hover {
+        background: #11111;
+        text-decoration: none;
+        cursor:pointer;
+      }
       `}</style>
       <div className="container">
         <div className="main-left">
-          {postMenuIndex.map(function(menus) {
+          {postMenuIndex.map(function (menus) {
             return (
               <div key={menus.id} className="box">
+                <br />
                 <Link route="item" params={{ id: menus.id }}>
                   <div>
                     <br />
@@ -70,30 +107,37 @@ function HomePage({ data, orderList, addOrder }) {
                     <br />
                   </div>
                 </Link>
-                <button onClick={addOrder.bind(null, menus)}>Order</button>
+                <button onClick={addOrder.bind(null, menus)} className="btn">Order</button>
               </div>
             )
           })}
           <div className="clearFix" />
         </div>
         <div className="main-right">
-          <strong>My Orders</strong>
-          {orderList.map(function(list) {
+          <center><h2>My Orders</h2></center>
+          {orderList.map(function (list) {
             {
               return (
                 <div key={list.id}>
-                  <span>{list.name}</span>
-                  <span>{list.amount}</span>
+                  <div className="order-list">
+                    <span><p> &nbsp;{list.name}</p></span>
+                  </div>
+                  <div className="order-list-num">
+                    <span><p>{list.amount}</p></span>
+                  </div>
                 </div>
               )
             }
           })}
-          <Link route="order">
-            <button>Order Now</button>
-          </Link>
-          <Link route="checkbill">
-            <button>Check Bill</button>
-          </Link>
+          <br />
+          <center>
+            <Link route="order">
+              <button className="btn">Order Now</button>
+            </Link>
+            <Link route="checkbill">
+              <button className="btn">Check Bill</button>
+            </Link>
+          </center>
         </div>
       </div>
     </div>
