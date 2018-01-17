@@ -17,7 +17,7 @@ function ItemPage({ data, orderList, addOrder }) {
   if (loading === true) return 'Loading...'
   return (
     <div>
-      <style jsx>{`
+      <style jsx>{` 
         header {
           text-align: center;
         }
@@ -26,15 +26,19 @@ function ItemPage({ data, orderList, addOrder }) {
           text-decoration: none;
         }
         .main-left {
-          width: 70%;
+          width: 68%;
+          height: 800px;
           float: left;
+          border-right: 1px solid grey;
         }
         .main-right {
-          width: 30%;
+          width: 28%;
+          height: 800px;
           float: left;
+          border-right: 1px solid grey;
         }
         .box {
-          width: 30%;
+          width: 100%;
           float: left;
           cursor: pointer;
         }
@@ -101,20 +105,56 @@ function ItemPage({ data, orderList, addOrder }) {
           top: 2px;
           left: 2px;
         }
+
+        .order-list{
+          width: 90%;
+          float: left;
+        }
+        .order-list span p {
+          font-size: 15px;
+        }
+
+        .order-list-num{
+          width: 7%;
+          float: right;
+        }
+        .order-list-num span p {
+          font-size: 15px;
+        }
+        
+        .btn {
+          
+          -webkit-border-radius: 3;
+          -moz-border-radius: 3;
+          border-radius: 3px;
+          font-family: Arial;
+          color: #11111;
+          font-size: 15px;
+          padding: 5px 10px 5px 11px;
+          text-decoration: none;
+        }
+        
+        .btn:hover {
+          background: #11111;
+          text-decoration: none;
+          cursor:pointer;
+        }
       `}</style>
       <Head>
         <title>Restaurant </title>
       </Head>
       <div className="container">
-        {postMenu.map(function(item) {
+        {postMenu.map(function (item) {
           return (
             <div key={item.id}>
+              <br />
               <div className="main-left">
+
                 <div className="box">
                   <div>
                     <img
-                      width="300"
-                      height="300"
+                      width="650"
+                      height="500"
                       src={`../static/images/menus/${item.images}`}
                     />
                   </div>
@@ -170,45 +210,60 @@ function ItemPage({ data, orderList, addOrder }) {
                       <label htmlFor="star1" title="Sucks big time">
                         1 star
                       </label>
+
                     </div>
-                    ({item.rating.totalRating} Ratings)
+
                   </p>
-                  <p>
-                    <h2>{item.name}</h2>
-                  </p>
-                  <p>ราคา {item.price}.-</p>
-                  <button onClick={addOrder.bind(null, item)}>Order</button>
+                  <br />
+                  <br />
+                  <br />
+                  <div>
+                    <p>({item.rating.totalRating} Ratings)</p>
+                    <p>
+                      <h2>{item.name}</h2>
+                    </p>
+                    <p>ราคา {item.price}.-</p>
+                    <button onClick={addOrder.bind(null, item)} className="btn">Order</button>
+                  </div>
+
+
                 </div>
               </div>
               <div className="main-right">
+                <center><h2>Reviews</h2></center>
                 <div>
-                  <p>
-                    <strong>Reviews</strong>
-                  </p>
-                  {item.relateComments.map(function(comments) {
+                  {item.relateComments.map(function (comments) {
                     {
-                      return <p key={comments.id}>{comments.body}</p>
+                      return <p key={comments.id}>&nbsp;&nbsp;{comments.body}</p>
                     }
                   })}
                 </div>
+                <center><h2>My Orders</h2></center>
                 <div>
-                  <strong>My Order</strong>
-                  {orderList.map(function(list) {
+
+                  {orderList.map(function (list) {
                     {
                       return (
                         <div key={list.id}>
-                          <span>{list.name}</span>
-                          <span>{list.amount}</span>
+                          <div className="order-list">
+                            <span><p> &nbsp;{list.name}</p></span>
+                          </div>
+                          <div className="order-list-num">
+                            <span><p>{list.amount}</p></span>
+                          </div>
                         </div>
                       )
                     }
                   })}
-                  <Link route="order">
-                    <button>Order Now</button>
-                  </Link>
-                  <Link route="checkbill">
-                    <button>Check Bill</button>
-                  </Link>
+                  <br />
+                  <center>
+                    <Link route="order">
+                      <button className="btn" >Order Now</button>
+                    </Link>
+                    <Link route="checkbill">
+                      <button className="btn">Check Bill</button>
+                    </Link>
+                  </center>
                 </div>
               </div>
             </div>
