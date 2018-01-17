@@ -1,6 +1,11 @@
 const emtpyOrder = []
 export default function orderUpdater(state = emtpyOrder, action) {
   const { type, item } = action
+
+  if (type === 'CHECK_BILL') {
+    return emtpyOrder
+  }
+
   const completedItem = state.filter(function(basket) {
     return basket.id === item.id
   }).length
@@ -26,6 +31,7 @@ export default function orderUpdater(state = emtpyOrder, action) {
           return basket
         })
       }
+
     default:
       return state
   }
