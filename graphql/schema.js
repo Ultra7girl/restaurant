@@ -34,7 +34,8 @@ const typeDefs = `
     type RatingType {
         rawRating: RawRatingType!
         totalRating: Int!
-        avgRating: Float!
+				avgRating: Float!
+				percentRating: Float!
     }
 
     type RawRatingType {
@@ -53,92 +54,94 @@ const typeDefs = `
 `
 
 const resolvers = {
-	Query: {
-		postCats: async (_, { first }) => {
-			const { data } = await fetchAPI(`/categories?_limit=${first}`)
-			return data
-		},
+  Query: {
+    postCats: async (_, { first }) => {
+      const { data } = await fetchAPI(`/categories?_limit=${first}`)
+      return data
+    },
 
-		postMenus: async (_, { first, id }) => {
-			const { data } = await fetchAPI(`/menus?_limit=${first}&categoryId=${id}`)
-			return data
-		},
-		postMenu: async (_, { id }) => {
-			const { data } = await fetchAPI(`/menus?id=${id}`)
-			return data
-		},
-		postMenuIndex: async () => {
-			const { data } = await fetchAPI(`/menus`)
-			return data
-		},
+    postMenus: async (_, { first, id }) => {
+      const { data } = await fetchAPI(`/menus?_limit=${first}&categoryId=${id}`)
+      return data
+    },
+    postMenu: async (_, { id }) => {
+      const { data } = await fetchAPI(`/menus?id=${id}`)
+      return data
+    },
+    postMenuIndex: async () => {
+      const { data } = await fetchAPI(`/menus`)
+      return data
+    },
 
-		postComments: async (_, { id }) => {
-			const { data } = await fetchAPI(`/comments?menuId=${id}`)
-			return data
-		}
-	},
+    postComments: async (_, { id }) => {
+      const { data } = await fetchAPI(`/comments?menuId=${id}`)
+      return data
+    }
+  },
 
-	PostMenuType: {
-		relateComments: async ({ id }, { first }) => {
-			const { data } = await fetchAPI(`/comments?_limit=${first}&menuId=${id}`)
-			return data
-		},
+  PostMenuType: {
+    relateComments: async ({ id }, { first }) => {
+      const { data } = await fetchAPI(`/comments?_limit=${first}&menuId=${id}`)
+      return data
+    },
 
-		rating: postMenu => {
-			const { rating } = postMenu
-			const total = Object.keys(rating).reduce((prev, key) => {
-				return prev + rating[key]
-			}, 0)
+    rating: postMenu => {
+      const { rating } = postMenu
+      const total = Object.keys(rating).reduce((prev, key) => {
+        return prev + rating[key]
+      }, 0)
 
-			if (total) {
-				const sumTotal = Object.keys(rating).reduce((prev, key) => {
-					var multiplier = 0
-					switch (key) {
-						case 'two':
-							multiplier = 2
-							break
-						case 'three':
-							multiplier = 3
-							break
-						case 'four':
-							multiplier = 4
-							break
-						case 'five':
-							multiplier = 5
-							break
-						case 'one':
-						default:
-							multiplier = 1
-					}
-					return prev + rating[key] * multiplier
-				}, 0)
+      if (total) {
+        const sumTotal = Object.keys(rating).reduce((prev, key) => {
+          var multiplier = 0
+          switch (key) {
+            case 'two':
+              multiplier = 2
+              break
+            case 'three':
+              multiplier = 3
+              break
+            case 'four':
+              multiplier = 4
+              break
+            case 'five':
+              multiplier = 5
+              break
+            case 'one':
+            default:
+              multiplier = 1
+          }
+          return prev + rating[key] * multiplier
+        }, 0)
 
-				return {
-					rawRating: postMenu.rating,
-					totalRating: total,
-					avgRating: Math.round(sumTotal / total)
-				}
-			}
-			return {
-				rawRating: postMenu.rating,
-				totalRating: 0,
-				avgRating: 0
-			}
-		}
-	}
+        return {
+          rawRating: postMenu.rating,
+          totalRating: total,
+          avgRating: Math.round(sumTotal / total),
+          percentRating: Math.round(sumTotal / total) * 100 / 5
+        }
+      }
+      return {
+        rawRating: postMenu.rating,
+        totalRating: 0,
+        avgRating: 0,
+        percentRating: 0
+      }
+    }
+  }
 
-	// (5*252 + 4*124 + 3*40 + 2*29 + 1*33) / (252+124+40+29+33) = 4.11
-	// PostCommentType: {
-	//     relateComments: async (_, { first }) => {
-	//         const { data } = await fetchAPI(`/comments?_limit=${first}`)
-	//         return data
-	//     }
-	// }
+  // (5*252 + 4*124 + 3*40 + 2*29 + 1*33) / (252+124+40+29+33) = 4.11
+  // PostCommentType: {
+  //     relateComments: async (_, { first }) => {
+  //         const { data } = await fetchAPI(`/comments?_limit=${first}`)
+  //         return data
+  //     }
+  // }
 }
 
 export const schema = makeExecutableSchema({
-	typeDefs,
-	resolvers
+  typeDefs,
+  resolvers
 })
 
 // http://localhost:5000/graphiql
