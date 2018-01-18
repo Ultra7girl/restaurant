@@ -134,9 +134,7 @@ function CheckBillPage({ data, orderList, checkBill }) {
                   <Link route="order">
                     <button className="btn" >Back to Order</button>
                   </Link>
-                  <Link route="checkbill">
-                    <button className="btn" onClick={checkBill}>Close</button>
-                  </Link>
+                  <button className="btn" onClick={checkBill}>Close</button>
                 </td>
               </tr>
             </tfoot>

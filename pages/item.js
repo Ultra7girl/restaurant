@@ -111,7 +111,7 @@ function ItemPage({ data, orderList, addOrder }) {
         .star-ratings .star-ratings-bottom {
           z-index: 0;
         }
-        h2{
+        .main-right center h2{
           text-decoration: underline;
         }
       `}</style>
@@ -133,10 +133,6 @@ function ItemPage({ data, orderList, addOrder }) {
                     />
                   </div>
                   <div>
-                    <p>
-                      <h2>{item.name}</h2>
-                    </p>
-                    <p>ราคา {item.price}.-</p>
                     <div className="star-ratings">
                       <div
                         className="star-ratings-top"
@@ -157,6 +153,12 @@ function ItemPage({ data, orderList, addOrder }) {
                       </div>
                     </div>
                     <p>({item.rating.totalRating} Ratings)</p>
+                    <p>
+                      <h2>{item.name}</h2>
+                    </p>
+                    <p>ราคา {item.price}.-</p>
+
+
                     <button onClick={addOrder.bind(null, item)} className="btn">
                       Order
                     </button>
