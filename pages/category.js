@@ -13,7 +13,7 @@ import { Link } from '../routes'
 
 function CategoryPage({ data, orderList, addOrder }) {
   const { loading, postMenus } = data
-  // console.log(postMenus)
+  const hasOrder = orderList.length !== 0
 
   if (loading === true) return 'Loading...'
   return (
@@ -26,9 +26,9 @@ function CategoryPage({ data, orderList, addOrder }) {
           color: #666;
           text-decoration: none;
         }
-        .container{
-          width:983px;
-          height:650px;          
+        .container {
+          width: 983px;
+          height: 650px;
           border-left: 1px solid grey;
           border-right: 1px solid grey;
         }
@@ -37,7 +37,7 @@ function CategoryPage({ data, orderList, addOrder }) {
           height: 650px;
           float: left;
           border-right: 1px solid grey;
-          text-align:center;
+          text-align: center;
         }
         .main-right {
           width: 28%;
@@ -45,7 +45,7 @@ function CategoryPage({ data, orderList, addOrder }) {
           float: left;
         }
 
-        .order-list{
+        .order-list {
           width: 90%;
           float: left;
         }
@@ -53,7 +53,7 @@ function CategoryPage({ data, orderList, addOrder }) {
           font-size: 15px;
         }
 
-        .order-list-num{
+        .order-list-num {
           width: 7%;
           float: right;
         }
@@ -71,7 +71,6 @@ function CategoryPage({ data, orderList, addOrder }) {
         }
 
         .btn {
-          
           -webkit-border-radius: 3;
           -moz-border-radius: 3;
           border-radius: 3px;
@@ -81,13 +80,13 @@ function CategoryPage({ data, orderList, addOrder }) {
           padding: 5px 10px 5px 11px;
           text-decoration: none;
         }
-        
+
         .btn:hover {
           background: #11111;
           text-decoration: none;
-          cursor:pointer;
+          cursor: pointer;
         }
-        h2{
+        h2 {
           text-decoration: underline;
         }
       `}</style>
@@ -97,7 +96,7 @@ function CategoryPage({ data, orderList, addOrder }) {
       <br />
       <div className="container">
         <div className="main-left">
-          {postMenus.map(function (menus) {
+          {postMenus.map(function(menus) {
             return (
               <div key={menus.id} className="box">
                 <Link route="item" params={{ id: menus.id }}>
@@ -115,39 +114,49 @@ function CategoryPage({ data, orderList, addOrder }) {
                     <br />
                   </div>
                 </Link>
-                <button onClick={addOrder.bind(null, menus)} className="btn">Order</button>
+                <button onClick={addOrder.bind(null, menus)} className="btn">
+                  Order
+                </button>
               </div>
             )
           })}
         </div>
         <div className="main-right">
-          <center><h2>My Orders</h2></center>
-          {orderList.map(function (list) {
+          <center>
+            <h2>My Orders</h2>
+          </center>
+          {orderList.map(function(list) {
             {
               return (
                 <div key={list.id}>
                   <div className="order-list">
-                    <span><p> &nbsp;{list.name}</p></span>
+                    <span>
+                      <p> &nbsp;{list.name}</p>
+                    </span>
                   </div>
                   <div className="order-list-num">
-                    <span><p>{list.amount}</p></span>
+                    <span>
+                      <p>{list.amount}</p>
+                    </span>
                   </div>
                 </div>
               )
             }
           })}
           <br />
-          <center>
-            <Link route="order">
-              <button className="btn">Order Now</button>
-            </Link>
-            <Link route="checkbill">
-              <button className="btn">Check Bill</button>
-            </Link>
-          </center>
+          {hasOrder && (
+            <center>
+              <Link route="order">
+                <button className="btn">Order Now</button>
+              </Link>
+              <Link route="checkbill">
+                <button className="btn">Check Bill</button>
+              </Link>
+            </center>
+          )}
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 
