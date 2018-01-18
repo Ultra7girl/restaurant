@@ -13,6 +13,7 @@ import { Link } from '../routes'
 
 function ItemPage({ data, orderList, addOrder }) {
   const { loading, postMenu } = data
+  const hasOrder = orderList.length !== 0
 
   if (loading === true) return 'Loading...'
   return (
@@ -25,19 +26,18 @@ function ItemPage({ data, orderList, addOrder }) {
           color: #666;
           text-decoration: none;
         }
-        .container{
-          width:983px;
-          height:1600px;          
+        .container {
+          width: 983px;
+          height: 1600px;
           border-left: 1px solid grey;
           border-right: 1px solid grey;
-          
         }
         .main-left {
           width: 68%;
           height: 1600px;
           float: left;
           border-right: 1px solid grey;
-          text-align:center;
+          text-align: center;
         }
         .main-right {
           width: 28%;
@@ -48,7 +48,7 @@ function ItemPage({ data, orderList, addOrder }) {
           width: 100%;
           float: left;
           cursor: pointer;
-          text-align:left;
+          text-align: left;
         }
         .clearFix {
           clear: both;
@@ -57,7 +57,7 @@ function ItemPage({ data, orderList, addOrder }) {
         .order-list {
           width: 90%;
           float: left;
-          text-align:left;
+          text-align: left;
         }
         .order-list span p {
           font-size: 15px;
@@ -66,7 +66,7 @@ function ItemPage({ data, orderList, addOrder }) {
         .order-list-num {
           width: 7%;
           float: right;
-          text-align:center;
+          text-align: center;
         }
         .order-list-num span p {
           font-size: 15px;
@@ -111,7 +111,7 @@ function ItemPage({ data, orderList, addOrder }) {
         .star-ratings .star-ratings-bottom {
           z-index: 0;
         }
-        .main-right center h2{
+        .main-right center h2 {
           text-decoration: underline;
         }
       `}</style>
@@ -120,7 +120,7 @@ function ItemPage({ data, orderList, addOrder }) {
       </Head>
       <br />
       <div className="container">
-        {postMenu.map(function (item) {
+        {postMenu.map(function(item) {
           return (
             <div key={item.id}>
               <div className="main-left">
@@ -158,7 +158,6 @@ function ItemPage({ data, orderList, addOrder }) {
                     </p>
                     <p>ราคา {item.price}.-</p>
 
-
                     <button onClick={addOrder.bind(null, item)} className="btn">
                       Order
                     </button>
@@ -170,7 +169,7 @@ function ItemPage({ data, orderList, addOrder }) {
                   <h2>Reviews</h2>
                 </center>
                 <div>
-                  {item.relateComments.map(function (comments) {
+                  {item.relateComments.map(function(comments) {
                     {
                       return (
                         <p key={comments.id}>&nbsp;&nbsp;{comments.body}</p>
@@ -182,7 +181,7 @@ function ItemPage({ data, orderList, addOrder }) {
                   <h2>My Orders</h2>
                 </center>
                 <div>
-                  {orderList.map(function (list) {
+                  {orderList.map(function(list) {
                     {
                       return (
                         <div key={list.id}>
@@ -201,14 +200,16 @@ function ItemPage({ data, orderList, addOrder }) {
                     }
                   })}
                   <br />
-                  <center>
-                    <Link route="order">
-                      <button className="btn">Order Now</button>
-                    </Link>
-                    <Link route="checkbill">
-                      <button className="btn">Check Bill</button>
-                    </Link>
-                  </center>
+                  {hasOrder && (
+                    <center>
+                      <Link route="order">
+                        <button className="btn">Order Now</button>
+                      </Link>
+                      <Link route="checkbill">
+                        <button className="btn">Check Bill</button>
+                      </Link>
+                    </center>
+                  )}
                 </div>
               </div>
             </div>
