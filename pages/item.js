@@ -25,22 +25,30 @@ function ItemPage({ data, orderList, addOrder }) {
           color: #666;
           text-decoration: none;
         }
+        .container{
+          width:983px;
+          height:1600px;          
+          border-left: 1px solid grey;
+          border-right: 1px solid grey;
+          
+        }
         .main-left {
           width: 68%;
-          height: 800px;
+          height: 1600px;
           float: left;
           border-right: 1px solid grey;
+          text-align:center;
         }
         .main-right {
           width: 28%;
-          height: 800px;
+          height: 1600px;
           float: left;
-          border-right: 1px solid grey;
         }
         .box {
           width: 100%;
           float: left;
           cursor: pointer;
+          text-align:left;
         }
         .clearFix {
           clear: both;
@@ -109,6 +117,7 @@ function ItemPage({ data, orderList, addOrder }) {
         .order-list{
           width: 90%;
           float: left;
+          text-align:left;
         }
         .order-list span p {
           font-size: 15px;
@@ -117,6 +126,7 @@ function ItemPage({ data, orderList, addOrder }) {
         .order-list-num{
           width: 7%;
           float: right;
+          text-align:center;
         }
         .order-list-num span p {
           font-size: 15px;
@@ -139,21 +149,24 @@ function ItemPage({ data, orderList, addOrder }) {
           text-decoration: none;
           cursor:pointer;
         }
+        h2{
+          text-decoration: underline;
+        }
       `}</style>
       <Head>
         <title>Restaurant </title>
       </Head>
+      <br />
       <div className="container">
         {postMenu.map(function (item) {
           return (
             <div key={item.id}>
-              <br />
               <div className="main-left">
 
                 <div className="box">
                   <div>
                     <img
-                      width="650"
+                      width="550"
                       height="500"
                       src={`../static/images/menus/${item.images}`}
                     />

@@ -26,13 +26,11 @@ function OrderPage({ data, orderList }) {
           color: #666;
           text-decoration: none;
         }
-        .main-left {
-          width: 70%;
-          float: left;
-        }
-        .main-right {
-          width: 30%;
-          float: left;
+        .container{
+          width:983px;
+          height:650px;          
+          border-left: 1px solid grey;
+          border-right: 1px solid grey;
         }
         .box {
           width: 30%;
@@ -42,36 +40,110 @@ function OrderPage({ data, orderList }) {
         .clearFix {
           clear: both;
         }
+
+        .btn {
+        
+        -webkit-border-radius: 3;
+        -moz-border-radius: 3;
+        border-radius: 3px;
+        font-family: Arial;
+        color: #11111;
+        font-size: 15px;
+        padding: 5px 10px 5px 11px;
+        text-decoration: none;
+      }
+      
+      .btn:hover {
+        background: #11111;
+        text-decoration: none;
+        cursor:pointer;
+      }
+
+      .greyGridTable {
+        border: 2px solid #FFFFFF;
+        width: 750px;
+        text-align: center;
+        border-collapse: collapse;
+        align:center;
+      }
+      .greyGridTable td, .greyGridTable th {
+        border: 1px solid #FFFFFF;
+        padding: 3px 4px;
+      }
+      .greyGridTable tbody td {
+        font-size: 13px;
+      }
+      .greyGridTable td:nth-child(even) {
+        background: #EBEBEB;
+      }
+      .greyGridTable thead {
+        background: #FFFFFF;
+        border-bottom: 4px solid #333333;
+      }
+      .greyGridTable thead th {
+        font-size: 15px;
+        font-weight: bold;
+        color: #333333;
+        text-align: center;
+        border-left: 2px solid #333333;
+      }
+      .greyGridTable thead th:first-child {
+        border-left: none;
+      }
+      
+      .greyGridTable tfoot {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333333;
+        border-top: 4px solid #333333;
+      }
+      .greyGridTable tfoot td {
+        font-size: 14px;
+        text-align: right;
+      }
       `}</style>
       <Head>
         <title>Restaurant </title>
       </Head>
+      <br />
       <div className="container">
-        <div>
-          <span>No.</span>
-          <span>Title</span>
-          <span>Quantity</span>
-          <span>Price</span>
-        </div>
-        {orderList.map(function(list) {
-          {
-            return (
-              <div key={list.id}>
-                <span>{list.name}</span>
-                <span>{list.amount}</span>
-                <span>{list.price}</span>
-              </div>
-            )
-          }
-        })}
-        <div>
-          <Link route="home">
-            <button>Back</button>
-          </Link>
-          <Link route="checkbill">
-            <button>Check Bill</button>
-          </Link>
-        </div>
+        <br /><br /><center>
+          <table className="greyGridTable" >
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Title</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td colSpan="4">
+                  <Link route="home">
+                    <button className="btn">Back</button>
+                  </Link>
+                  <Link route="checkbill">
+                    <button className="btn">Check Bill</button>
+                  </Link>
+                </td>
+              </tr>
+            </tfoot>
+            {orderList.map(function (list, i = 1) {
+              {
+                return (
+                  <tr key={list.id}>
+                    <td>{i += 1}</td>
+                    <td>{list.name}</td>
+                    <td>{list.amount}</td>
+                    <td>{list.price}</td>
+                  </tr>
+                )
+              }
+            })}
+
+          </table>
+        </center>
       </div>
     </div>
   )

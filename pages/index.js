@@ -30,17 +30,23 @@ function HomePage({ data, orderList, addOrder }) {
         color: #666;
         text-decoration: none;
       }
+      .container{
+          width:983px;
+          height:1700px;          
+          border-left: 1px solid grey;
+          border-right: 1px solid grey;
+        }
       .main-left {
         width: 68%;
-        height: 1600px;
+        height: 1700px;
         float: left;
         border-right: 1px solid grey;
+        text-align:center;
       }
       .main-right {
         width: 28%;
-        height: 1600px;
+        height: 1700px;
         float: left;
-        border-right: 1px solid grey;
       }
 
       .order-list{
@@ -86,6 +92,7 @@ function HomePage({ data, orderList, addOrder }) {
         cursor:pointer;
       }
       `}</style>
+      <br />
       <div className="container">
         <div className="main-left">
           {postMenuIndex.map(function (menus) {
@@ -94,7 +101,6 @@ function HomePage({ data, orderList, addOrder }) {
                 <br />
                 <Link route="item" params={{ id: menus.id }}>
                   <div>
-                    <br />
                     <img
                       width="180"
                       height="150"

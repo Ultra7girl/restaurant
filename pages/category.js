@@ -26,17 +26,23 @@ function CategoryPage({ data, orderList, addOrder }) {
           color: #666;
           text-decoration: none;
         }
+        .container{
+          width:983px;
+          height:650px;          
+          border-left: 1px solid grey;
+          border-right: 1px solid grey;
+        }
         .main-left {
           width: 68%;
-          height: 800px;
+          height: 650px;
           float: left;
           border-right: 1px solid grey;
+          text-align:center;
         }
         .main-right {
           width: 28%;
-          height: 800px;
+          height: 650px;
           float: left;
-          border-right: 1px solid grey;
         }
 
         .order-list{
@@ -80,6 +86,9 @@ function CategoryPage({ data, orderList, addOrder }) {
           background: #11111;
           text-decoration: none;
           cursor:pointer;
+        }
+        h2{
+          text-decoration: underline;
         }
       `}</style>
       <Head>
