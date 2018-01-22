@@ -11,7 +11,7 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function CategoryPage({ data, orderList, addOrder }) {
+function CategoryPage({ data, orderList, addOrder, addAmount, minusAmount, removeOrder }) {
   const { loading, postMenus } = data
   const hasOrder = orderList.length !== 0
 
@@ -46,7 +46,7 @@ function CategoryPage({ data, orderList, addOrder }) {
         }
 
         .order-list {
-          width: 90%;
+          width: 53%;
           float: left;
         }
         .order-list span p {
@@ -54,11 +54,20 @@ function CategoryPage({ data, orderList, addOrder }) {
         }
 
         .order-list-num {
-          width: 7%;
-          float: right;
+          width: 10%;
+          float: left;
         }
         .order-list-num span p {
           font-size: 15px;
+        }
+
+        .order-list-plus {
+          width: 35%;
+          float: left;
+        }
+        .order-btn{
+          width: 100%;
+          float: left;
         }
 
         .box {
@@ -96,7 +105,7 @@ function CategoryPage({ data, orderList, addOrder }) {
       <br />
       <div className="container">
         <div className="main-left">
-          {postMenus.map(function(menus) {
+          {postMenus.map(function (menus) {
             return (
               <div key={menus.id} className="box">
                 <Link route="item" params={{ id: menus.id }}>
@@ -125,7 +134,7 @@ function CategoryPage({ data, orderList, addOrder }) {
           <center>
             <h2>My Orders</h2>
           </center>
-          {orderList.map(function(list) {
+          {orderList.map(function (list) {
             {
               return (
                 <div key={list.id}>
@@ -139,21 +148,33 @@ function CategoryPage({ data, orderList, addOrder }) {
                       <p>{list.amount}</p>
                     </span>
                   </div>
+                  <div className="order-list-plus">
+                    <button onClick={addAmount(list)} className="btn">
+                      +
+                    </button>
+                    <button onClick={minusAmount(list)} className="btn">
+                      -
+                    </button>
+                    <button onClick={removeOrder(list)} className="btn">
+                      x
+                    </button>
+                  </div>
                 </div>
               )
             }
           })}
-          <br />
-          {hasOrder && (
-            <center>
-              <Link route="order">
-                <button className="btn">Order Now</button>
-              </Link>
-              <Link route="checkbill">
-                <button className="btn">Check Bill</button>
-              </Link>
-            </center>
-          )}
+          <div className="order-btn">
+            {hasOrder && (
+              <center>
+                <Link route="order">
+                  <button className="btn">Order Now</button>
+                </Link>
+                <Link route="checkbill">
+                  <button className="btn">Check Bill</button>
+                </Link>
+              </center>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -168,12 +189,36 @@ class OrderContrainer extends React.Component {
     })
   }
 
+  addAmount = item => () => {
+    this.props.dispatch({
+      type: 'ADD_AMOUNT',
+      item
+    })
+  }
+
+  minusAmount = item => () => {
+    this.props.dispatch({
+      type: 'MINUS_AMOUNT',
+      item
+    })
+  }
+
+  removeOrder = item => () => {
+    this.props.dispatch({
+      type: 'REMOVE_ORDER',
+      item
+    })
+  }
+
   render() {
     return (
       <CategoryPage
         data={this.props.data}
         orderList={this.props.orderList}
         addOrder={this.addOrder}
+        addAmount={this.addAmount}
+        minusAmount={this.minusAmount}
+        removeOrder={this.removeOrder}
       />
     )
   }

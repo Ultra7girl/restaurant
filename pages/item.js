@@ -11,7 +11,7 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function ItemPage({ data, orderList, addOrder }) {
+function ItemPage({ data, orderList, addOrder, addAmount, minusAmount, removeOrder }) {
   const { loading, postMenu } = data
   const hasOrder = orderList.length !== 0
 
@@ -44,6 +44,33 @@ function ItemPage({ data, orderList, addOrder }) {
           height: 1600px;
           float: left;
         }
+
+        .order-list {
+          width: 53%;
+          float: left;
+        }
+        .order-list span p {
+          font-size: 15px;
+        }
+
+        .order-list-num {
+          width: 10%;
+          float: left;
+        }
+        .order-list-num span p {
+          font-size: 15px;
+        }
+
+        .order-list-plus {
+          width: 35%;
+          float: left;
+        }
+
+        .order-btn{
+          width: 100%;
+          float: left;
+        }
+        
         .box {
           width: 100%;
           float: left;
@@ -55,21 +82,24 @@ function ItemPage({ data, orderList, addOrder }) {
         }
 
         .order-list {
-          width: 90%;
+          width: 53%;
           float: left;
-          text-align: left;
         }
         .order-list span p {
           font-size: 15px;
         }
 
         .order-list-num {
-          width: 7%;
-          float: right;
-          text-align: center;
+          width: 10%;
+          float: left;
         }
         .order-list-num span p {
           font-size: 15px;
+        }
+
+        .order-list-plus {
+          width: 35%;
+          float: left;
         }
 
         .btn {
@@ -120,7 +150,7 @@ function ItemPage({ data, orderList, addOrder }) {
       </Head>
       <br />
       <div className="container">
-        {postMenu.map(function(item) {
+        {postMenu.map(function (item) {
           return (
             <div key={item.id}>
               <div className="main-left">
@@ -169,7 +199,7 @@ function ItemPage({ data, orderList, addOrder }) {
                   <h2>Reviews</h2>
                 </center>
                 <div>
-                  {item.relateComments.map(function(comments) {
+                  {item.relateComments.map(function (comments) {
                     {
                       return (
                         <p key={comments.id}>&nbsp;&nbsp;{comments.body}</p>
@@ -180,26 +210,36 @@ function ItemPage({ data, orderList, addOrder }) {
                 <center>
                   <h2>My Orders</h2>
                 </center>
-                <div>
-                  {orderList.map(function(list) {
-                    {
-                      return (
-                        <div key={list.id}>
-                          <div className="order-list">
-                            <span>
-                              <p> &nbsp;{list.name}</p>
-                            </span>
-                          </div>
-                          <div className="order-list-num">
-                            <span>
-                              <p>{list.amount}</p>
-                            </span>
-                          </div>
+                {orderList.map(function (list) {
+                  {
+                    return (
+                      <div key={list.id}>
+                        <div className="order-list">
+                          <span>
+                            <p> &nbsp;{list.name}</p>
+                          </span>
                         </div>
-                      )
-                    }
-                  })}
-                  <br />
+                        <div className="order-list-num">
+                          <span>
+                            <p>{list.amount}</p>
+                          </span>
+                        </div>
+                        <div className="order-list-plus">
+                          <button onClick={addAmount(list)} className="btn">
+                            +
+                    </button>
+                          <button onClick={minusAmount(list)} className="btn">
+                            -
+                    </button>
+                          <button onClick={removeOrder(list)} className="btn">
+                            x
+                    </button>
+                        </div>
+                      </div>
+                    )
+                  }
+                })}
+                <div className="order-btn">
                   {hasOrder && (
                     <center>
                       <Link route="order">
@@ -227,6 +267,26 @@ class OrderContrainer extends React.Component {
       item
     })
   }
+  addAmount = item => () => {
+    this.props.dispatch({
+      type: 'ADD_AMOUNT',
+      item
+    })
+  }
+
+  minusAmount = item => () => {
+    this.props.dispatch({
+      type: 'MINUS_AMOUNT',
+      item
+    })
+  }
+
+  removeOrder = item => () => {
+    this.props.dispatch({
+      type: 'REMOVE_ORDER',
+      item
+    })
+  }
 
   render() {
     return (
@@ -234,6 +294,9 @@ class OrderContrainer extends React.Component {
         data={this.props.data}
         orderList={this.props.orderList}
         addOrder={this.addOrder}
+        addAmount={this.addAmount}
+        minusAmount={this.minusAmount}
+        removeOrder={this.removeOrder}
       />
     )
   }

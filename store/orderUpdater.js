@@ -5,7 +5,7 @@ export default function orderUpdater(state = emtpyOrder, action) {
   if (type === 'CHECK_BILL') {
     return emtpyOrder
   } else if (type === 'ADD_ORDER') {
-    const completedItem = state.filter(function(basket) {
+    const completedItem = state.filter(function (basket) {
       return basket.id === item.id
     }).length
 
@@ -17,7 +17,7 @@ export default function orderUpdater(state = emtpyOrder, action) {
         amount: 1
       })
     } else {
-      return state.map(function(basket) {
+      return state.map(function (basket) {
         if (basket.id === item.id) {
           return {
             ...basket,
@@ -28,6 +28,39 @@ export default function orderUpdater(state = emtpyOrder, action) {
         return basket
       })
     }
+  } else if (type === 'ADD_AMOUNT') {
+
+    return state.map(function (basket) {
+
+      if (basket.id == item.id) {
+        return {
+          ...basket,
+          amount: basket.amount + 1
+        }
+      }
+
+      return basket
+    })
+  } else if (type === 'MINUS_AMOUNT') {
+
+    return state.map(function (basket) {
+
+      if (basket.id === item.id) {
+        return {
+          ...basket,
+          amount: basket.amount - 1
+        }
+      }
+      return basket
+    }).filter(function (basket) {
+      return basket.amount > 0
+    })
+  } else if (type === 'REMOVE_ORDER') {
+
+    return state.filter(function (basket) {
+      return basket.id !== item.id
+    })
+
   } else {
     return state
   }

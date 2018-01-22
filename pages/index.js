@@ -11,7 +11,7 @@ import gql from 'graphql-tag'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
-function HomePage({ data, orderList, addOrder }) {
+function HomePage({ data, orderList, addOrder, addAmount, minusAmount, removeOrder }) {
   const { loading, postMenuIndex } = data
   const hasOrder = orderList.length !== 0
   // console.log('postMenus =>', data)
@@ -51,7 +51,7 @@ function HomePage({ data, orderList, addOrder }) {
         }
 
         .order-list {
-          width: 90%;
+          width: 53%;
           float: left;
         }
         .order-list span p {
@@ -59,11 +59,21 @@ function HomePage({ data, orderList, addOrder }) {
         }
 
         .order-list-num {
-          width: 7%;
-          float: right;
+          width: 10%;
+          float: left;
         }
         .order-list-num span p {
           font-size: 15px;
+        }
+
+        .order-list-plus {
+          width: 35%;
+          float: left;
+        }
+
+        .order-btn{
+          width: 100%;
+          float: left;
         }
 
         .box {
@@ -95,7 +105,7 @@ function HomePage({ data, orderList, addOrder }) {
       <br />
       <div className="container">
         <div className="main-left">
-          {postMenuIndex.map(function(menus) {
+          {postMenuIndex.map(function (menus) {
             return (
               <div key={menus.id} className="box">
                 <br />
@@ -113,7 +123,7 @@ function HomePage({ data, orderList, addOrder }) {
                     <br />
                   </div>
                 </Link>
-                <button onClick={addOrder.bind(null, menus)} className="btn">
+                <button onClick={addOrder(menus)} className="btn">
                   Order
                 </button>
               </div>
@@ -125,7 +135,7 @@ function HomePage({ data, orderList, addOrder }) {
           <center>
             <h2>My Orders</h2>
           </center>
-          {orderList.map(function(list) {
+          {orderList.map(function (list) {
             {
               return (
                 <div key={list.id}>
@@ -139,21 +149,33 @@ function HomePage({ data, orderList, addOrder }) {
                       <p>{list.amount}</p>
                     </span>
                   </div>
+                  <div className="order-list-plus">
+                    <button onClick={addAmount(list)} className="btn">
+                      +
+                    </button>
+                    <button onClick={minusAmount(list)} className="btn">
+                      -
+                    </button>
+                    <button onClick={removeOrder(list)} className="btn">
+                      x
+                    </button>
+                  </div>
                 </div>
               )
             }
           })}
-          <br />
-          {hasOrder && (
-            <center>
-              <Link route="order">
-                <button className="btn">Order Now</button>
-              </Link>
-              <Link route="checkbill">
-                <button className="btn">Check Bill</button>
-              </Link>
-            </center>
-          )}
+          <div className="order-btn">
+            {hasOrder && (
+              <center>
+                <Link route="order">
+                  <button className="btn">Order Now</button>
+                </Link>
+                <Link route="checkbill">
+                  <button className="btn">Check Bill</button>
+                </Link>
+              </center>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -161,9 +183,29 @@ function HomePage({ data, orderList, addOrder }) {
 }
 
 class OrderContrainer extends React.Component {
-  addOrder = item => {
+  addOrder = item => () => {
     this.props.dispatch({
       type: 'ADD_ORDER',
+      item
+    })
+  }
+  addAmount = item => () => {
+    this.props.dispatch({
+      type: 'ADD_AMOUNT',
+      item
+    })
+  }
+
+  minusAmount = item => () => {
+    this.props.dispatch({
+      type: 'MINUS_AMOUNT',
+      item
+    })
+  }
+
+  removeOrder = item => () => {
+    this.props.dispatch({
+      type: 'REMOVE_ORDER',
       item
     })
   }
@@ -174,6 +216,9 @@ class OrderContrainer extends React.Component {
         data={this.props.data}
         orderList={this.props.orderList}
         addOrder={this.addOrder}
+        addAmount={this.addAmount}
+        minusAmount={this.minusAmount}
+        removeOrder={this.removeOrder}
       />
     )
   }
