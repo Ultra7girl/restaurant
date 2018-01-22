@@ -120,26 +120,44 @@ function CheckBillPage({ data, orderList, checkBill }) {
       </Head>
       <br />
       <div className="container">
-        <center>
+        <br /><br /><center>
           <table className="greyGridTable" >
             <thead>
               <tr>
-                <th>Number of Orders:</th>
+                <th>No.</th>
                 <th>Title</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>#</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <td colSpan="4">
-                  <Link route="order">
-                    <button className="btn" >Back to Order</button>
+                <td colSpan="5">
+                  <Link route="home">
+                    <button className="btn">Back</button>
                   </Link>
-                  <button className="btn" onClick={checkBill}>Close</button>
+                  <Link route="checkbill">
+                    <button className="btn">Check Bill</button>
+                  </Link>
                 </td>
               </tr>
             </tfoot>
+            {orderList.map(function (list, i = 1) {
+              {
+                return (
+                  <tr key={list.id}>
+                    <td>{i += 1}</td>
+                    <td>{list.name}</td>
+                    <td>{list.amount}</td>
+                    <td>{list.price}</td>
+                    <td>{list.amount * list.price}</td>
+                  </tr>
+                )
+              }
+            })}
             <tr>
-              <td>{total}</td>
+              <td colSpan="4">Number of Orders: {total}</td>
               <td>{totalPrice}</td>
             </tr>
 
